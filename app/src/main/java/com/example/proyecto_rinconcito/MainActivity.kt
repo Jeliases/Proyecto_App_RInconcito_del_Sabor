@@ -16,5 +16,9 @@ class MainActivity : AppCompatActivity() {
         val edad: Int = 26
 
 
+        val nombre: String = "Jorge Luis"
+        val edad: Int = 26
+
+
     }
 }
