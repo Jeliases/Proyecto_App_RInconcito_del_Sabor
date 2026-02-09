@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "935042756652",
-    "project_id": "proyectorinconcito",
-    "storage_bucket": "proyectorinconcito.firebasestorage.app"
+    "project_number": "396781632979",
+    "project_id": "rinconcito-app",
+    "storage_bucket": "rinconcito-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:935042756652:android:c8cffc1d49e708f1712189",
+        "mobilesdk_app_id": "1:396781632979:android:40c2942808dd36608f8326",
         "android_client_info": {
           "package_name": "com.example.proyecto_rinconcito"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB0DLPv97ctUT2QIx3zRz5zCGhl3EvpGjg"
+          "current_key": "AIzaSyD8bC55CNJrnmYIFyijWV5EpotgHHQtuNw"
         }
       ],
       "services": {

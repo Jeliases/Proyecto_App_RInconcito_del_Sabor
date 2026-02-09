@@ -4,11 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyecto_rinconcito.R
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : AppCompatActivity() {
@@ -17,11 +22,11 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
 
     private lateinit var etNombre: EditText
-    private lateinit var etEmail: EditText
+    private lateinit var etCorreo: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnRegister: Button
     private lateinit var tvGoLogin: TextView
-    private var progressBar: ProgressBar? = null
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
         db = FirebaseFirestore.getInstance()
 
         etNombre = findViewById(R.id.etNombre)
-        etEmail = findViewById(R.id.etCorreo)
+        etCorreo = findViewById(R.id.etCorreo)
         etPassword = findViewById(R.id.etPassword)
         btnRegister = findViewById(R.id.btnRegister)
         tvGoLogin = findViewById(R.id.tvGoLogin)
@@ -40,25 +45,28 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.setOnClickListener { doRegister() }
 
         tvGoLogin.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
 
     private fun doRegister() {
         val nombre = etNombre.text.toString().trim()
-        val email = etEmail.text.toString().trim()
+        val correo = etCorreo.text.toString().trim()
         val pass = etPassword.text.toString()
 
-        if (nombre.isEmpty()) {
-            etNombre.error = "Ingrese su nombre"
+        if (nombre.isBlank()) {
+            etNombre.error = "Ingresa tu nombre"
             etNombre.requestFocus()
             return
         }
-        if (!isValidEmail(email)) {
-            etEmail.error = "Correo inválido"
-            etEmail.requestFocus()
+
+        if (!isValidEmail(correo)) {
+            etCorreo.error = "Correo inválido"
+            etCorreo.requestFocus()
             return
         }
+
         if (pass.length < 6) {
             etPassword.error = "Mínimo 6 caracteres"
             etPassword.requestFocus()
@@ -67,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
 
         setLoading(true)
 
-        auth.createUserWithEmailAndPassword(email, pass)
+        auth.createUserWithEmailAndPassword(correo, pass)
             .addOnSuccessListener { result ->
                 val uid = result.user?.uid
                 if (uid == null) {
@@ -76,18 +84,21 @@ class RegisterActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                // PERFIL EN FIRESTORE (sin password!)
-                val data = hashMapOf(
+                // Perfil (NO guardar contraseña aquí)
+                val userDoc = hashMapOf(
                     "nombre" to nombre,
-                    "correo" to email,
-                    "rol" to "cliente", // por defecto: cliente
-                    "createdAt" to Timestamp.now()
+                    "correo" to correo,
+                    "rol" to "cliente",        // por defecto cliente
+                    "enabled" to true,
+                    "createdAt" to FieldValue.serverTimestamp()
                 )
 
-                db.collection("usuarios").document(uid).set(data)
+                db.collection("usuarios")
+                    .document(uid) // <-- aquí está el "auto id": uid real del usuario
+                    .set(userDoc)
                     .addOnSuccessListener {
                         setLoading(false)
-                        Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Registro OK", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
                     }
@@ -98,7 +109,7 @@ class RegisterActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 setLoading(false)
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error registro: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 
@@ -107,11 +118,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setLoading(loading: Boolean) {
-        progressBar?.visibility = if (loading) View.VISIBLE else View.GONE
+        progressBar.visibility = if (loading) View.VISIBLE else View.GONE
         btnRegister.isEnabled = !loading
         tvGoLogin.isEnabled = !loading
         etNombre.isEnabled = !loading
-        etEmail.isEnabled = !loading
+        etCorreo.isEnabled = !loading
         etPassword.isEnabled = !loading
     }
 }
