@@ -15,26 +15,29 @@
         android:theme="@style/Theme.Proyecto_Rinconcito"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".cliente.ClienteHomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".auth.RegisterActivity"
-            android:exported="false" />
-        <activity
             android:name=".auth.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
-            android:exported="false" />
-        <activity
-            android:name=".cliente.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".cliente.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".cliente.ClienteHomeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".auth.RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
