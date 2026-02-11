@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.proyecto_rinconcito" />
-                  <option name="mobileSdkAppId" value="1:935042756652:android:c8cffc1d49e708f1712189" />
-                  <option name="projectId" value="proyectorinconcito" />
-                  <option name="projectNumber" value="935042756652" />
+                  <option name="mobileSdkAppId" value="1:396781632979:android:40c2942808dd36608f8326" />
+                  <option name="projectId" value="rinconcito-app" />
+                  <option name="projectNumber" value="396781632979" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

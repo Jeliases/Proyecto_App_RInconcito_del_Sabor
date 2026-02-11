@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_rinconcito.R
 import com.example.proyecto_rinconcito.models.Plato
 import com.google.android.material.button.MaterialButton
+import com.bumptech.glide.Glide
+
 
 class PlatosAdapter(
     private val items: MutableList<Plato>,
@@ -42,4 +44,6 @@ class PlatosAdapter(
         items.addAll(newItems)
         notifyDataSetChanged()
     }
+
+
 }
