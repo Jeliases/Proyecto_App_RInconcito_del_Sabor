@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Detalle del Pedido"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="16dp">
+
+        <!-- Información del Pedido -->
+        <TextView
+            android:id="@+id/tvCodigoPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Pedido #123456"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/tvNombreCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Cliente: Nombre Apellido"
+            android:layout_marginTop="4dp"/>
+
+        <TextView
+            android:id="@+id/tvFechaPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Fecha: 25/05/2024, 10:30 AM"
+            android:layout_marginTop="4dp"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipEstado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="EN PREPARACION"/>
+
+        <!-- Lista de Items -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Items del Pedido"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerItemsPedido"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Total -->
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#D32F2F"
+            android:layout_marginTop="8dp"
+            tools:text="Total: S/ 120.50"/>
+
+        <!-- Botones de Acción -->
+        <LinearLayout
+            android:id="@+id/layoutBotonesAccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btnConfirmarPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirmar Pago"/>
+
+            <Button
+                android:id="@+id/btnPrepararPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Marcar como EN PREPARACIÓN"/>
+
+            <Button
+                android:id="@+id/btnPedidoListo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Marcar como LISTO PARA RECOGER"/>
+
+            <Button
+                android:id="@+id/btnEntregarPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Marcar como ENTREGADO"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
