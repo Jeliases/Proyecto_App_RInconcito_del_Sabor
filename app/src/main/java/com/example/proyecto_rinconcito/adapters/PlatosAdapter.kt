@@ -3,6 +3,7 @@ package com.example.proyecto_rinconcito.cliente.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_rinconcito.R
@@ -21,6 +22,7 @@ class PlatosAdapter(
         val tvDesc: TextView = v.findViewById(R.id.tvDesc)
         val tvPrecio: TextView = v.findViewById(R.id.tvPrecio)
         val btnAgregar: MaterialButton = v.findViewById(R.id.btnAgregar)
+        val imgPlato: ImageView = v.findViewById(R.id.imgPlato)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -34,8 +36,13 @@ class PlatosAdapter(
         holder.tvDesc.text = p.descripcion
         holder.tvPrecio.text = "S/ %.2f".format(p.precio)
 
+        Glide.with(holder.itemView.context)
+            .load(p.imagenUrl)
+            .into(holder.imgPlato)
+
         holder.btnAgregar.setOnClickListener { onAgregar(p) }
     }
+
 
     override fun getItemCount(): Int = items.size
 

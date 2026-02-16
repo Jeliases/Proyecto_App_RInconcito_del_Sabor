@@ -14,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_Rinconcito"
         android:usesCleartextTraffic="true">
+
+        <!-- Pantalla inicial -->
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true">
@@ -23,21 +25,32 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".cliente.MainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".cliente.ClienteHomeActivity"
-            android:exported="false" />
-
+        <!-- Registro -->
         <activity
             android:name=".auth.RegisterActivity"
             android:exported="false" />
 
+        <!-- Home Cliente -->
+        <activity
+            android:name=".cliente.ClienteHomeActivity"
+            android:exported="false" />
+
+        <!-- Carrito -->
+        <activity
+            android:name=".cliente.CarritoActivity"
+            android:exported="false" />
+
+        <!-- Pago -->
+        <activity
+            android:name=".cliente.PagoActivity"
+            android:exported="false" />
+
+        <!-- Splash -->
         <activity
             android:name=".SplashActivity"
             android:exported="false" />
+
     </application>
+
 
 </manifest>

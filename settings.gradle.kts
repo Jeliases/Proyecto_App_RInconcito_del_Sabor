@@ -19,6 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
+
 rootProject.name = "Proyecto_Rinconcito"
 include(":app")
  

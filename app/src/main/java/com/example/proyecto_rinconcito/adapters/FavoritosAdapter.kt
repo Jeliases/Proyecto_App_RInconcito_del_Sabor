@@ -8,6 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyecto_rinconcito.R
 import com.example.proyecto_rinconcito.models.Plato
 
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+
+
 class FavoritosAdapter(
     private val items: MutableList<Plato>,
     private val onClick: (Plato) -> Unit
@@ -16,6 +20,9 @@ class FavoritosAdapter(
     inner class VH(v: View) : RecyclerView.ViewHolder(v) {
         val tvNombre: TextView = v.findViewById(R.id.tvNombreFav)
         val tvPrecio: TextView = v.findViewById(R.id.tvPrecioFav)
+
+        val imgPlato: ImageView = v.findViewById(R.id.imgPlatoFav)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -29,6 +36,11 @@ class FavoritosAdapter(
         holder.tvPrecio.text = "S/ %.2f".format(p.precio)
 
         holder.itemView.setOnClickListener { onClick(p) }
+
+        Glide.with(holder.itemView.context)
+            .load(p.imagenUrl)
+            .into(holder.imgPlato)
+
     }
 
     override fun getItemCount(): Int = items.size

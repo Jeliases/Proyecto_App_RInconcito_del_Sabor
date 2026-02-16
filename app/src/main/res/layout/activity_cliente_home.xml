@@ -6,35 +6,68 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- Top bar simple -->
-    <LinearLayout
+    <!-- TOP BAR CON LOGOUT -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/tvTituloRest"
-            android:layout_width="wrap_content"
+        <!-- Títulos -->
+        <LinearLayout
+            android:id="@+id/layoutTitulos"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Rinconcito del Sabor"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#111111"/>
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnLogout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/tvDireccion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Av. Venezuela 1041, Breña - Lima"
-            android:textSize="12sp"
-            android:textColor="#666666"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvTituloRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rinconcito del Sabor"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#111111"/>
+
+            <TextView
+                android:id="@+id/tvDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Av. Venezuela 1041, Breña - Lima"
+                android:textSize="12sp"
+                android:textColor="#666666"/>
+        </LinearLayout>
+
+        <!-- BOTÓN LOGOUT BONITO -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardLogout"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:cardCornerRadius="22dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FCEAEA"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_logout"
+                android:tint="#D32F2F"
+                android:contentDescription="Cerrar sesión"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <!-- Banner -->
     <com.google.android.material.card.MaterialCardView
@@ -68,28 +101,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Descubre"
-                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
                     android:textSize="22sp"
-                    android:textColor="#FFFFFF"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="el placer de comer"
-                    android:textSize="14sp"
-                    android:textColor="#FFECEC"/>
+                    android:textColor="#FFECEC"
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- placeholder “imagen” -->
-            <View
-                android:layout_width="78dp"
-                android:layout_height="78dp"
-                android:background="#FFFFFF"
-                android:alpha="0.25"/>
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="Logo Rinconcito"
+                android:scaleType="centerInside"
+                android:src="@drawable/logo_rinconcito" />
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Categorías (solo visual por ahora) -->
+
+    <!-- Categorías -->
     <LinearLayout
         android:id="@+id/layoutCategorias"
         android:layout_width="0dp"
@@ -139,7 +174,7 @@
             android:textSize="12sp"/>
     </LinearLayout>
 
-    <!-- Título Favoritos -->
+    <!-- Favoritos -->
     <TextView
         android:id="@+id/tvFavoritos"
         android:layout_width="0dp"
@@ -155,11 +190,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Carrusel Favoritos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFavoritos"
         android:layout_width="0dp"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -167,7 +201,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Título Menú -->
+    <!-- Menú -->
     <TextView
         android:id="@+id/tvMenu"
         android:layout_width="0dp"
@@ -183,7 +217,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Lista Menú -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMenuPlatos"
         android:layout_width="0dp"
@@ -194,6 +227,19 @@
         app:layout_constraintTop_toBottomOf="@id/tvMenu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Carrito -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCarrito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="Carrito"
+        android:src="@drawable/ic_shopping_cart"
+        app:tint="#FFFFFF"
+        app:backgroundTint="#D32F2F"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

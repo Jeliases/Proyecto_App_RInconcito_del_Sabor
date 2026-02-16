@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#F5F5F5"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/tvCodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Código: 123456"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estado: PENDIENTE_PAGO"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/tvTotalAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total: S/ 25.0"
+        android:layout_marginTop="4dp"/>
+
+    <Button
+        android:id="@+id/btnAccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Acción"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>

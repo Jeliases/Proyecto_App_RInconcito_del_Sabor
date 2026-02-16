@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        // Auto-login si ya hay sesión
+
         val user = auth.currentUser
         if (user != null) {
             goByRole(user.uid)

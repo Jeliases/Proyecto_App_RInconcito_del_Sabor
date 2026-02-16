@@ -2,48 +2,55 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="220dp"
-    android:layout_height="140dp"
+    android:layout_width="190dp"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="12dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="3dp">
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#F4EBF4">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <View
-            android:id="@+id/imgFake"
+        <!-- Imagen bien ajustada -->
+        <ImageView
+            android:id="@+id/imgPlatoFav"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="#F2F2F2"/>
+            android:layout_height="95dp"
+            android:scaleType="centerCrop" />
 
+        <!-- Contenido -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="12dp"
-            android:orientation="vertical">
+            android:layout_height="90dp"
+
+            android:orientation="vertical"
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/tvNombreFav"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pollo a la brasa"
-                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Chaufa con lomo de pollo"
+                android:textColor="#111111"
                 android:textSize="14sp"
-                android:textColor="#111111"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPrecioFav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="S/ 30.00"
-                android:textStyle="bold"
-                android:textSize="13sp"
                 android:textColor="#D32F2F"
-                android:layout_marginTop="4dp"/>
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </LinearLayout>
