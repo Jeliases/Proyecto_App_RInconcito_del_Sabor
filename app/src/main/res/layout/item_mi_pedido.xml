@@ -5,10 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="4dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
@@ -17,12 +14,14 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- Código de Pedido -->
         <TextView
             android:id="@+id/tvCodigoPedidoLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pedido #"
             android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,33 +29,49 @@
             android:id="@+id/tvCodigoPedido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
             android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
             app:layout_constraintStart_toEndOf="@+id/tvCodigoPedidoLabel"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="4dp"
             tools:text="123456" />
 
+        <!-- Fecha del Pedido -->
         <TextView
-            android:id="@+id/tvTotal"
+            android:id="@+id/tvFechaPedido"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#D32F2F"
+            android:textSize="12sp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@+id/tvCodigoPedido"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="4dp"
+            tools:text="25 de mayo de 2024, 10:30 AM" />
+
+        <!-- Total del Pedido -->
+        <TextView
+            android:id="@+id/tvTotalPedido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="#D32F2F"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tvFechaPedido"
             tools:text="S/ 45.50" />
 
+        <!-- Estado del Pedido -->
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEstado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
+            app:chipBackgroundColor="#E0E0E0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCodigoPedido"
-            tools:text="EN PREPARACION" />
+            app:layout_constraintTop_toBottomOf="@+id/tvFechaPedido"
+            tools:text="En preparación" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

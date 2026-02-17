@@ -4,14 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.proyecto_rinconcito.R
+import com.example.proyecto_rinconcito.admin.AdminActivity
 import com.example.proyecto_rinconcito.cliente.ClienteHomeActivity
+import com.example.proyecto_rinconcito.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -19,29 +16,19 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-
-    private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var btnLogin: Button
-    private lateinit var tvGoRegister: TextView
-    private var progressBar: ProgressBar? = null
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        etEmail = findViewById(R.id.etEmail)
-        etPassword = findViewById(R.id.etPassword)
-        btnLogin = findViewById(R.id.btnLogin)
-        tvGoRegister = findViewById(R.id.tvGoRegister)
-        progressBar = findViewById(R.id.progressBar)
+        binding.btnLogin.setOnClickListener { doLogin() }
 
-        btnLogin.setOnClickListener { doLogin() }
-
-        tvGoRegister.setOnClickListener {
+        binding.tvGoRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
@@ -56,18 +43,23 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun doLogin() {
-        val email = etEmail.text.toString().trim()
-        val pass = etPassword.text.toString()
+        val email = binding.etEmail.text.toString().trim()
+        val pass = binding.etPassword.text.toString()
 
         if (!isValidEmail(email)) {
-            etEmail.error = "Correo inválido"
-            etEmail.requestFocus()
+            binding.tilEmail.error = "Correo inválido"
+            binding.etEmail.requestFocus()
             return
+        } else {
+            binding.tilEmail.error = null
         }
+
         if (pass.length < 6) {
-            etPassword.error = "Mínimo 6 caracteres"
-            etPassword.requestFocus()
+            binding.tilPassword.error = "Mínimo 6 caracteres"
+            binding.etPassword.requestFocus()
             return
+        } else {
+            binding.tilPassword.error = null
         }
 
         setLoading(true)
@@ -96,7 +88,6 @@ class LoginActivity : AppCompatActivity() {
                 setLoading(false)
 
                 if (!doc.exists()) {
-                    // Si existe auth pero no existe doc en Firestore
                     Toast.makeText(this, "No existe perfil en Firestore. Regístrate otra vez.", Toast.LENGTH_LONG).show()
                     auth.signOut()
                     return@addOnSuccessListener
@@ -106,9 +97,7 @@ class LoginActivity : AppCompatActivity() {
 
                 when (rol) {
                     "admin" -> {
-                        // TODO: cambia esto cuando crees tu AdminActivity real
-                        // startActivity(Intent(this, AdminHomeActivity::class.java))
-                        startActivity(Intent(this, ClienteHomeActivity::class.java)) // temporal
+                        startActivity(Intent(this, AdminActivity::class.java))
                     }
                     "cliente" -> {
                         startActivity(Intent(this, ClienteHomeActivity::class.java))
@@ -133,10 +122,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setLoading(loading: Boolean) {
-        progressBar?.visibility = if (loading) View.VISIBLE else View.GONE
-        btnLogin.isEnabled = !loading
-        tvGoRegister.isEnabled = !loading
-        etEmail.isEnabled = !loading
-        etPassword.isEnabled = !loading
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.btnLogin.isEnabled = !loading
+        binding.tvGoRegister.isEnabled = !loading
+        binding.etEmail.isEnabled = !loading
+        binding.etPassword.isEnabled = !loading
     }
 }

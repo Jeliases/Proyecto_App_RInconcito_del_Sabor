@@ -45,6 +45,24 @@
             android:name=".cliente.PagoActivity"
             android:exported="false" />
 
+        <!-- Mis Pedidos -->
+        <activity
+            android:name=".cliente.MisPedidosActivity"
+            android:exported="false" />
+
+        <!-- Admin -->
+        <activity
+            android:name=".admin.AdminActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".admin.AdminPedidoDetalleActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".admin.AddEditPlatoActivity"
+            android:exported="false" />
+
         <!-- Splash -->
         <activity
             android:name=".SplashActivity"

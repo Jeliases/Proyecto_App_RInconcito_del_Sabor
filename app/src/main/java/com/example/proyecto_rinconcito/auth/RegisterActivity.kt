@@ -4,14 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.proyecto_rinconcito.R
-import com.google.firebase.Timestamp
+import com.example.proyecto_rinconcito.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,57 +15,51 @@ class RegisterActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-
-    private lateinit var etNombre: EditText
-    private lateinit var etCorreo: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var btnRegister: Button
-    private lateinit var tvGoLogin: TextView
-    private lateinit var progressBar: ProgressBar
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        etNombre = findViewById(R.id.etNombre)
-        etCorreo = findViewById(R.id.etCorreo)
-        etPassword = findViewById(R.id.etPassword)
-        btnRegister = findViewById(R.id.btnRegister)
-        tvGoLogin = findViewById(R.id.tvGoLogin)
-        progressBar = findViewById(R.id.progressBar)
+        binding.btnRegister.setOnClickListener { doRegister() }
 
-        btnRegister.setOnClickListener { doRegister() }
-
-        tvGoLogin.setOnClickListener {
+        binding.tvGoLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
 
     private fun doRegister() {
-        val nombre = etNombre.text.toString().trim()
-        val correo = etCorreo.text.toString().trim()
-        val pass = etPassword.text.toString()
+        val nombre = binding.etNombre.text.toString().trim()
+        val correo = binding.etCorreo.text.toString().trim()
+        val pass = binding.etPassword.text.toString()
 
         if (nombre.isBlank()) {
-            etNombre.error = "Ingresa tu nombre"
-            etNombre.requestFocus()
+            binding.tilNombre.error = "Ingresa tu nombre"
+            binding.etNombre.requestFocus()
             return
+        } else {
+            binding.tilNombre.error = null
         }
 
         if (!isValidEmail(correo)) {
-            etCorreo.error = "Correo inválido"
-            etCorreo.requestFocus()
+            binding.tilCorreo.error = "Correo inválido"
+            binding.etCorreo.requestFocus()
             return
+        } else {
+            binding.tilCorreo.error = null
         }
 
         if (pass.length < 6) {
-            etPassword.error = "Mínimo 6 caracteres"
-            etPassword.requestFocus()
+            binding.tilPassword.error = "Mínimo 6 caracteres"
+            binding.etPassword.requestFocus()
             return
+        } else {
+            binding.tilPassword.error = null
         }
 
         setLoading(true)
@@ -118,11 +107,11 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setLoading(loading: Boolean) {
-        progressBar.visibility = if (loading) View.VISIBLE else View.GONE
-        btnRegister.isEnabled = !loading
-        tvGoLogin.isEnabled = !loading
-        etNombre.isEnabled = !loading
-        etCorreo.isEnabled = !loading
-        etPassword.isEnabled = !loading
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.btnRegister.isEnabled = !loading
+        binding.tvGoLogin.isEnabled = !loading
+        binding.etNombre.isEnabled = !loading
+        binding.etCorreo.isEnabled = !loading
+        binding.etPassword.isEnabled = !loading
     }
 }
