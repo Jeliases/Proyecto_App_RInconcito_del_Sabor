@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Panel de Administrador"
-            app:menu="@menu/admin_menu"
+            app:menu="@menu/admin_toolbar_menu" 
             style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
     </com.google.android.material.appbar.AppBarLayout>

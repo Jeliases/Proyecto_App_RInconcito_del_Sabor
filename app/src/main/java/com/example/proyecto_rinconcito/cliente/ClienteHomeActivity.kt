@@ -2,28 +2,37 @@ package com.example.proyecto_rinconcito.cliente
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyecto_rinconcito.R
 import com.example.proyecto_rinconcito.auth.LoginActivity
-import com.example.proyecto_rinconcito.cliente.adapters.FavoritosAdapter
-import com.example.proyecto_rinconcito.cliente.adapters.PlatosAdapter
+import com.example.proyecto_rinconcito.adapters.FavoritosAdapter
+import com.example.proyecto_rinconcito.adapters.PlatosAdapter
 import com.example.proyecto_rinconcito.databinding.ActivityClienteHomeBinding
+import com.example.proyecto_rinconcito.models.Horario
 import com.example.proyecto_rinconcito.models.ItemPedido
 import com.example.proyecto_rinconcito.models.Plato
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class ClienteHomeActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityClienteHomeBinding
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding: ActivityClienteHomeBinding
 
     private lateinit var favoritosAdapter: FavoritosAdapter
     private lateinit var platosAdapter: PlatosAdapter
+    private var statusListener: ListenerRegistration? = null
+    private var horarioListener: ListenerRegistration? = null
+    private var isRestaurantOpen = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +47,91 @@ class ClienteHomeActivity : AppCompatActivity() {
         setupRecyclerViews()
         setupListeners()
 
+        escucharEstadoDelRestaurante()
         cargarFavoritos()
         cargarMenu()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        statusListener?.remove()
+        horarioListener?.remove()
+    }
+
+    private fun escucharEstadoDelRestaurante() {
+        val statusRef = db.collection("restaurante").document("estado")
+        val horarioRef = db.collection("restaurante").document("horario")
+
+        statusListener = statusRef.addSnapshotListener { snapshot, _ ->
+            val manualOpen = snapshot?.getBoolean("abierto") ?: false
+            horarioRef.get().addOnSuccessListener { horarioDoc ->
+                val horario = horarioDoc.toObject(Horario::class.java)
+                verificarDisponibilidad(manualOpen, horario)
+            }
+        }
+
+        horarioListener = horarioRef.addSnapshotListener { _, _ ->
+            statusRef.get().addOnSuccessListener { statusDoc ->
+                val manualOpen = statusDoc.getBoolean("abierto") ?: false
+                horarioRef.get().addOnSuccessListener { horarioDoc ->
+                    val horario = horarioDoc.toObject(Horario::class.java)
+                    verificarDisponibilidad(manualOpen, horario)
+                }
+            }
+        }
+    }
+
+    private fun verificarDisponibilidad(manualOpen: Boolean, horario: Horario?) {
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) // Domingo = 1, Sábado = 7
+
+        val diaActual = when (dayOfWeek) {
+            Calendar.MONDAY -> horario?.lunes
+            Calendar.TUESDAY -> horario?.martes
+            Calendar.WEDNESDAY -> horario?.miercoles
+            Calendar.THURSDAY -> horario?.jueves
+            Calendar.FRIDAY -> horario?.viernes
+            Calendar.SATURDAY -> horario?.sabado
+            Calendar.SUNDAY -> horario?.domingo
+            else -> null
+        }
+
+        var horarioOpen = false
+        if (diaActual?.abierto == true) {
+            try {
+                val sdf = SimpleDateFormat("hh:mm a", Locale.US)
+                val ahora = calendar.time
+                val apertura = sdf.parse(diaActual.apertura)
+                val cierre = sdf.parse(diaActual.cierre)
+
+                val calApertura = Calendar.getInstance().apply { time = apertura }
+                val calCierre = Calendar.getInstance().apply { time = cierre }
+
+                val calAhora = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
+                    set(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
+                }
+                
+                horarioOpen = calAhora.after(calApertura) && calAhora.before(calCierre)
+
+            } catch (e: Exception) {
+                horarioOpen = false
+            }
+        }
+
+        isRestaurantOpen = manualOpen && horarioOpen
+        actualizarUI(isRestaurantOpen)
+    }
+
+    private fun actualizarUI(isOpen: Boolean) {
+        binding.tvRestauranteCerrado.visibility = if (isOpen) View.GONE else View.VISIBLE
+        binding.btnCarrito.visibility = if (isOpen) View.VISIBLE else View.GONE
+
+        if (::platosAdapter.isInitialized) platosAdapter.setRestaurantOpen(isOpen)
+        if (::favoritosAdapter.isInitialized) favoritosAdapter.setRestaurantOpen(isOpen)
+    }
+    
+    // ... (El resto de las funciones se mantienen igual)
 
     private fun setupToolbar() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -59,89 +150,52 @@ class ClienteHomeActivity : AppCompatActivity() {
     }
 
     private fun setupAdapters() {
-        favoritosAdapter = FavoritosAdapter(mutableListOf()) { plato ->
-            Toast.makeText(this, "${plato.nombre} agregado desde favoritos", Toast.LENGTH_SHORT).show()
-            agregarAlCarrito(plato)
+        favoritosAdapter = FavoritosAdapter(mutableListOf(), isRestaurantOpen) { plato ->
+            if (isRestaurantOpen) agregarAlCarrito(plato)
         }
 
-        platosAdapter = PlatosAdapter(mutableListOf()) { plato ->
-            Toast.makeText(this, "${plato.nombre} agregado al carrito 🛒", Toast.LENGTH_SHORT).show()
-            agregarAlCarrito(plato)
+        platosAdapter = PlatosAdapter(mutableListOf(), isRestaurantOpen) { plato ->
+            if (isRestaurantOpen) agregarAlCarrito(plato)
         }
     }
 
     private fun setupRecyclerViews() {
         binding.rvFavoritos.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvFavoritos.adapter = favoritosAdapter
-
         binding.rvMenuPlatos.layoutManager = LinearLayoutManager(this)
         binding.rvMenuPlatos.adapter = platosAdapter
     }
 
     private fun setupListeners() {
-        // El listener del botón de logout ahora está en la Toolbar
         binding.btnCarrito.setOnClickListener {
-            startActivity(Intent(this, CarritoActivity::class.java))
+            if(isRestaurantOpen) startActivity(Intent(this, CarritoActivity::class.java))
         }
     }
 
     private fun cargarFavoritos() {
-        db.collection("platos")
-            .whereEqualTo("favorito", true)
-            .get()
+        db.collection("platos").whereEqualTo("favorito", true).get()
             .addOnSuccessListener { snap ->
-                val list = snap.documents.map { d ->
-                    Plato(
-                        id = d.id,
-                        nombre = d.getString("nombre") ?: "",
-                        descripcion = d.getString("descripcion") ?: "",
-                        precio = d.getDouble("precio") ?: 0.0,
-                        categoria = d.getString("categoria") ?: "",
-                        favorito = d.getBoolean("favorito") ?: false,
-                        imagenUrl = d.getString("imagenUrl") ?: ""
-                    )
-                }
+                val list = snap.toObjects(Plato::class.java)
                 favoritosAdapter.setData(list)
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al cargar favoritos: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 
     private fun cargarMenu() {
-        db.collection("platos")
-            .get()
+        db.collection("platos").get()
             .addOnSuccessListener { snap ->
-                val list = snap.documents.map { d ->
-                    Plato(
-                        id = d.id,
-                        nombre = d.getString("nombre") ?: "",
-                        descripcion = d.getString("descripcion") ?: "",
-                        precio = d.getDouble("precio") ?: 0.0,
-                        categoria = d.getString("categoria") ?: "",
-                        favorito = d.getBoolean("favorito") ?: false,
-                        imagenUrl = d.getString("imagenUrl") ?: ""
-                    )
-                }
+                val list = snap.toObjects(Plato::class.java)
                 platosAdapter.setData(list)
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error al cargar el menú: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
 
     private fun agregarAlCarrito(plato: Plato) {
-        val item = ItemPedido(
-            nombre = plato.nombre,
-            cantidad = 1,
-            precio = plato.precio
-        )
+        val item = ItemPedido(plato.nombre, 1, plato.precio)
         CarritoManager.agregarItem(item)
+        Toast.makeText(this, "${plato.nombre} agregado al carrito 🛒", Toast.LENGTH_SHORT).show()
     }
 
     private fun mostrarDialogoDeLogout() {
-        AlertDialog.Builder(this)
-            .setTitle("Cerrar sesión")
+        AlertDialog.Builder(this).setTitle("Cerrar sesión")
             .setMessage("¿Seguro que deseas cerrar sesión?")
             .setCancelable(false)
             .setPositiveButton("Sí") { _, _ ->
@@ -150,7 +204,6 @@ class ClienteHomeActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
-            .setNegativeButton("Cancelar", null)
-            .show()
+            .setNegativeButton("Cancelar", null).show()
     }
 }

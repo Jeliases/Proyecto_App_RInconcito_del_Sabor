@@ -7,5 +7,6 @@ data class Plato(
     var precio: Double = 0.0,
     var categoria: String = "",
     var favorito: Boolean = false,
-    var imagenUrl: String = ""
+    var imagenUrl: String = "",
+    var disponible: Boolean = true // Nuevo campo para gestionar la disponibilidad
 )

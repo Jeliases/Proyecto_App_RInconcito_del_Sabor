@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import com.bumptech.glide.Glide
 import com.example.proyecto_rinconcito.databinding.ActivityAddEditPlatoBinding
 import com.example.proyecto_rinconcito.models.Plato
@@ -52,18 +53,19 @@ class AddEditPlatoActivity : AppCompatActivity() {
     }
 
     private fun setupCategoriaDropdown() {
-        val categorias = listOf("Broaster", "Parrilla", "Ensaladas", "Bebidas", "Postres") // Puedes obtenerlas de otro lugar si quieres
+        val categorias = listOf("Broaster", "Parrilla", "Ensaladas", "Bebidas", "Postres")
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, categorias)
         binding.actvCategoria.setAdapter(adapter)
     }
 
     private fun setupListeners() {
-        binding.btnSeleccionarImagen.setOnClickListener {
-            abrirSelectorDeImagen()
-        }
-        binding.btnGuardar.setOnClickListener {
-            guardarPlato()
-        }
+        binding.btnSeleccionarImagen.setOnClickListener { abrirSelectorDeImagen() }
+        binding.btnGuardar.setOnClickListener { guardarPlato() }
+
+        // Limpiar errores de validación al escribir
+        binding.etNombre.doOnTextChanged { _, _, _, _ -> binding.tilNombre.error = null }
+        binding.etPrecio.doOnTextChanged { _, _, _, _ -> binding.tilPrecio.error = null }
+        binding.actvCategoria.doOnTextChanged { _, _, _, _ -> binding.tilCategoria.error = null }
     }
 
     private fun cargarDatosDelPlato() {
@@ -77,41 +79,48 @@ class AddEditPlatoActivity : AppCompatActivity() {
                             binding.etDescripcion.setText(plato.descripcion)
                             binding.etPrecio.setText(plato.precio.toString())
                             binding.actvCategoria.setText(plato.categoria, false)
-                            Glide.with(this).load(plato.imagenUrl).into(binding.ivPlatoPreview)
+                            if (plato.imagenUrl.isNotEmpty()) {
+                                Glide.with(this).load(plato.imagenUrl).into(binding.ivPlatoPreview)
+                            }
                         }
+                    } else {
+                        Toast.makeText(this, "No se encontraron los datos del plato.", Toast.LENGTH_SHORT).show()
+                        finish()
                     }
+                }
+                .addOnFailureListener { 
+                    Toast.makeText(this, "Error al cargar los datos del plato.", Toast.LENGTH_SHORT).show()
+                    finish()
                 }
         }
     }
 
     private fun abrirSelectorDeImagen() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data?.data != null) {
             imagenUri = data.data
             Glide.with(this).load(imagenUri).into(binding.ivPlatoPreview)
         }
     }
 
     private fun guardarPlato() {
-        // TODO: Añadir validación de campos
+        if (!validarCampos()) return
 
-        binding.btnGuardar.isEnabled = false // Deshabilitar para evitar guardados múltiples
+        binding.btnGuardar.isEnabled = false
+
+        val urlImagenExistente = platoActual?.imagenUrl
 
         if (imagenUri != null) {
-            // Si hay una nueva imagen, subirla primero
             subirImagenYGuardarDatos()
-        } else if (platoId != null) {
-            // Si no hay nueva imagen pero estamos editando, solo guardar datos
-            guardarDatos(platoActual!!.imagenUrl) // Usamos la URL de la imagen que ya tenía
+        } else if (urlImagenExistente != null) {
+            guardarDatos(urlImagenExistente)
         } else {
-            // Si estamos creando un plato nuevo, la imagen es obligatoria
-            Toast.makeText(this, "Por favor, selecciona una imagen para el plato.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Por favor, selecciona una imagen.", Toast.LENGTH_SHORT).show()
             binding.btnGuardar.isEnabled = true
         }
     }
@@ -122,13 +131,9 @@ class AddEditPlatoActivity : AppCompatActivity() {
 
         imagenUri?.let {
             ref.putFile(it)
-                .addOnSuccessListener {
-                    ref.downloadUrl.addOnSuccessListener { url ->
-                        guardarDatos(url.toString())
-                    }
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                .addOnSuccessListener { ref.downloadUrl.addOnSuccessListener { url -> guardarDatos(url.toString()) } }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Error al subir la imagen: ${e.message}", Toast.LENGTH_SHORT).show()
                     binding.btnGuardar.isEnabled = true
                 }
         }
@@ -139,30 +144,45 @@ class AddEditPlatoActivity : AppCompatActivity() {
         val descripcion = binding.etDescripcion.text.toString()
         val precio = binding.etPrecio.text.toString().toDoubleOrNull() ?: 0.0
         val categoria = binding.actvCategoria.text.toString()
+        
+        val id = platoId ?: db.collection("platos").document().id
 
         val plato = Plato(
-            id = platoId ?: UUID.randomUUID().toString(), // Si estamos editando, usamos el ID existente
+            id = id,
             nombre = nombre,
             descripcion = descripcion,
             precio = precio,
             categoria = categoria,
-            imagenUrl = imageUrl
+            imagenUrl = imageUrl,
+            // Preservar los valores existentes al editar, o usar defaults al crear
+            favorito = platoActual?.favorito ?: false,
+            disponible = platoActual?.disponible ?: true 
         )
 
-        val document = if (platoId != null) {
-            db.collection("platos").document(platoId!!)
-        } else {
-            db.collection("platos").document(plato.id)
-        }
-
-        document.set(plato)
+        db.collection("platos").document(id).set(plato)
             .addOnSuccessListener {
                 Toast.makeText(this, "Plato guardado con éxito", Toast.LENGTH_SHORT).show()
-                finish() // Cerrar la actividad y volver a la lista
+                finish()
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Error al guardar el plato", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error al guardar el plato: ${e.message}", Toast.LENGTH_SHORT).show()
                 binding.btnGuardar.isEnabled = true
             }
+    }
+
+    private fun validarCampos(): Boolean {
+        if (binding.etNombre.text.isNullOrBlank()) {
+            binding.tilNombre.error = "El nombre es obligatorio"
+            return false
+        }
+        if (binding.etPrecio.text.isNullOrBlank()) {
+            binding.tilPrecio.error = "El precio es obligatorio"
+            return false
+        }
+        if (binding.actvCategoria.text.isNullOrBlank()) {
+            binding.tilCategoria.error = "La categoría es obligatoria"
+            return false
+        }
+        return true
     }
 }

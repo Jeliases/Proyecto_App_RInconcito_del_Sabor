@@ -53,13 +53,23 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="S/ 25.00" />
 
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchDisponible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Disponible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvPrecioPlato"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPrecioPlato"
+            android:layout_marginEnd="16dp"/>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/tvPrecioPlato"
+            app:layout_constraintTop_toBottomOf="@+id/switchDisponible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

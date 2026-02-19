@@ -32,16 +32,11 @@ class CarritoActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.topAppBar.setNavigationOnClickListener {
-            // Cierra la actividad y vuelve a la anterior
-            finish()
-        }
+        binding.topAppBar.setNavigationOnClickListener { finish() }
     }
 
     private fun setupRecyclerView() {
-        adapter = CarritoAdapter(CarritoManager.listaItems) {
-            actualizarVista()
-        }
+        adapter = CarritoAdapter(CarritoManager.listaItems) { actualizarVista() }
         binding.recyclerCarrito.layoutManager = LinearLayoutManager(this)
         binding.recyclerCarrito.adapter = adapter
     }
@@ -51,7 +46,7 @@ class CarritoActivity : AppCompatActivity() {
             if (CarritoManager.listaItems.isEmpty()) {
                 Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show()
             } else {
-                confirmarPedido()
+                verificarYConfirmarPedido()
             }
         }
     }
@@ -67,11 +62,34 @@ class CarritoActivity : AppCompatActivity() {
             binding.recyclerCarrito.visibility = View.VISIBLE
             binding.emptyView.visibility = View.GONE
         }
-        // Notificar al adapter por si se eliminó un item
         adapter.notifyDataSetChanged()
     }
 
-    private fun confirmarPedido() {
+    private fun verificarYConfirmarPedido() {
+        val user = auth.currentUser ?: return
+        binding.btnConfirmarPedido.isEnabled = false
+
+        db.collection("pedidos")
+            .whereEqualTo("clienteId", user.uid)
+            .whereEqualTo("estado", "PENDIENTE_PAGO")
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.isEmpty) {
+                    // No hay pedidos pendientes, se puede crear uno nuevo
+                    crearNuevoPedido()
+                } else {
+                    // Ya tiene un pedido pendiente
+                    Toast.makeText(this, "Ya tienes un pago pendiente. Revísalo en 'Mis Pedidos'.", Toast.LENGTH_LONG).show()
+                    binding.btnConfirmarPedido.isEnabled = true
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Error al verificar pedidos pendientes.", Toast.LENGTH_SHORT).show()
+                binding.btnConfirmarPedido.isEnabled = true
+            }
+    }
+
+    private fun crearNuevoPedido() {
         val user = auth.currentUser ?: return
         val total = CarritoManager.obtenerTotal()
         val codigo = (100000..999999).random().toString()
@@ -86,8 +104,7 @@ class CarritoActivity : AppCompatActivity() {
             codigoPedido = codigo
         )
 
-        db.collection("pedidos")
-            .add(pedido)
+        db.collection("pedidos").add(pedido)
             .addOnSuccessListener { documentReference ->
                 val intent = Intent(this, PagoActivity::class.java)
                 intent.putExtra("pedidoId", documentReference.id)
@@ -98,7 +115,8 @@ class CarritoActivity : AppCompatActivity() {
                 finish()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Error al guardar pedido", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al guardar el pedido.", Toast.LENGTH_SHORT).show()
+                binding.btnConfirmarPedido.isEnabled = true
             }
     }
 }

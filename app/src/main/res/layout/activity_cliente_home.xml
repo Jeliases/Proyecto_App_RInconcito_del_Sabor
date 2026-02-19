@@ -24,6 +24,20 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Banner de Restaurante Cerrado -->
+    <TextView
+        android:id="@+id/tvRestauranteCerrado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFC107"
+        android:text="El restaurante está cerrado en este momento."
+        android:textColor="@android:color/black"
+        android:padding="8dp"
+        android:gravity="center"
+        android:visibility="gone" 
+        app:layout_anchor="@id/appBarLayout"
+        app:layout_anchorGravity="bottom"/>
+
     <!-- Scrollable content area -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

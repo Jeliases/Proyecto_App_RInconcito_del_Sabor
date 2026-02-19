@@ -61,6 +61,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
     //  Glide (usar kapt, NO annotationProcessor)
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -73,3 +74,4 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }
 
+// Comentario para forzar la sincronización

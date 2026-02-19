@@ -1,4 +1,4 @@
-package com.example.proyecto_rinconcito.cliente
+package com.example.proyecto_rinconcito.adapters
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -10,7 +10,10 @@ import com.example.proyecto_rinconcito.models.Pedido
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class MisPedidosAdapter(private var pedidos: List<Pedido>) : RecyclerView.Adapter<MisPedidosAdapter.ViewHolder>() {
+class MisPedidosAdapter(
+    private var pedidos: List<Pedido>,
+    private val onPedidoClicked: (Pedido) -> Unit
+) : RecyclerView.Adapter<MisPedidosAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemMiPedidoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -18,7 +21,9 @@ class MisPedidosAdapter(private var pedidos: List<Pedido>) : RecyclerView.Adapte
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(pedidos[position])
+        val pedido = pedidos[position]
+        holder.bind(pedido)
+        holder.itemView.setOnClickListener { onPedidoClicked(pedido) }
     }
 
     override fun getItemCount(): Int {
@@ -35,21 +40,19 @@ class MisPedidosAdapter(private var pedidos: List<Pedido>) : RecyclerView.Adapte
             binding.tvCodigoPedido.text = pedido.codigoPedido
             binding.tvTotalPedido.text = String.format("S/ %.2f", pedido.total)
 
-            // Formatear la fecha
             val sdf = SimpleDateFormat("dd/MM/yyyy, hh:mm a", Locale.getDefault())
             binding.tvFechaPedido.text = sdf.format(pedido.fecha)
 
-            // Configurar el estado y el color del chip
             binding.chipEstado.text = pedido.estado.replace("_", " ").lowercase().replaceFirstChar { it.titlecase() }
 
             val color = when (pedido.estado) {
-                "PENDIENTE_PAGO" -> "#FFC107" // Amarillo
-                "PAGO_EN_VERIFICACION" -> "#FF9800" // Naranja
-                "EN_PREPARACION" -> "#2196F3" // Azul
-                "LISTO_PARA_RECOGER" -> "#4CAF50" // Verde
-                "ENTREGADO" -> "#BDBDBD" // Gris
-                "CANCELADO" -> "#F44336" // Rojo
-                else -> "#E0E0E0" // Gris claro por defecto
+                "PENDIENTE_PAGO" -> "#FFC107"
+                "PAGO_EN_VERIFICACION" -> "#FF9800"
+                "EN_PREPARACION" -> "#2196F3"
+                "LISTO_PARA_RECOGER" -> "#4CAF50"
+                "ENTREGADO" -> "#BDBDBD"
+                "CANCELADO" -> "#F44336"
+                else -> "#E0E0E0"
             }
             binding.chipEstado.setChipBackgroundColor(ColorStateList.valueOf(Color.parseColor(color)))
         }

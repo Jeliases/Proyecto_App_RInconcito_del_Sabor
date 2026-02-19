@@ -15,7 +15,8 @@
         android:theme="@style/Theme.Proyecto_Rinconcito"
         android:usesCleartextTraffic="true">
 
-        <!-- Pantalla inicial -->
+        <!-- ... (tus activities existentes) ... -->
+
         <activity
             android:name=".auth.LoginActivity"
             android:exported="true">
@@ -24,51 +25,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".auth.RegisterActivity" android:exported="false" />
+        <activity android:name=".cliente.ClienteHomeActivity" android:exported="false" />
+        <activity android:name=".cliente.CarritoActivity" android:exported="false" />
+        <activity android:name=".cliente.PagoActivity" android:exported="false" />
+        <activity android:name=".cliente.MisPedidosActivity" android:exported="false" />
+        <activity android:name=".admin.AdminActivity" android:exported="false" />
+        <activity android:name=".admin.AdminPedidoDetalleActivity" android:exported="false" />
+        <activity android:name=".admin.AddEditPlatoActivity" android:exported="false" />
+        <activity android:name=".admin.HorarioActivity" android:exported="false" />
+        <activity android:name=".SplashActivity" android:exported="false" />
 
-        <!-- Registro -->
-        <activity
-            android:name=".auth.RegisterActivity"
-            android:exported="false" />
-
-        <!-- Home Cliente -->
-        <activity
-            android:name=".cliente.ClienteHomeActivity"
-            android:exported="false" />
-
-        <!-- Carrito -->
-        <activity
-            android:name=".cliente.CarritoActivity"
-            android:exported="false" />
-
-        <!-- Pago -->
-        <activity
-            android:name=".cliente.PagoActivity"
-            android:exported="false" />
-
-        <!-- Mis Pedidos -->
-        <activity
-            android:name=".cliente.MisPedidosActivity"
-            android:exported="false" />
-
-        <!-- Admin -->
-        <activity
-            android:name=".admin.AdminActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".admin.AdminPedidoDetalleActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".admin.AddEditPlatoActivity"
-            android:exported="false" />
-
-        <!-- Splash -->
-        <activity
-            android:name=".SplashActivity"
-            android:exported="false" />
+        <!-- Firebase Messaging Service -->
+        <service
+            android:name=".services.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
-
 
 </manifest>

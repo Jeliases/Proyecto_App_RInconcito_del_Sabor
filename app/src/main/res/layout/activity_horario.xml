@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Gestionar Horario"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Lunes -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lunes" style="@style/TextAppearance.Material3.TitleMedium"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchLunes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abierto"/>
+            <LinearLayout android:id="@+id/layoutHorasLunes" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etAperturaLunes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
+                <EditText android:id="@+id/etCierreLunes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
+            </LinearLayout>
+
+            <!-- Martes -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Martes" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchMartes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abierto"/>
+            <LinearLayout android:id="@+id/layoutHorasMartes" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etAperturaMartes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
+                <EditText android:id="@+id/etCierreMartes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
+            </LinearLayout>
+
+            <!-- Miércoles -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Miércoles" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchMiercoles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abierto"/>
+            <LinearLayout android:id="@+id/layoutHorasMiercoles" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etAperturaMiercoles" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
+                <EditText android:id="@+id/etCierreMiercoles" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
+            </LinearLayout>
+
+            <!-- Jueves -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jueves" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchJueves"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abierto"/>
+            <LinearLayout android:id="@+id/layoutHorasJueves" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etAperturaJueves" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
+                <EditText android:id="@+id/etCierreJueves" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
+            </LinearLayout>
+
+            <!-- Viernes -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Viernes" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchViernes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abierto"/>
+            <LinearLayout android:id="@+id/layoutHorasViernes" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etAperturaViernes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
+                <EditText android:id="@+id/etCierreViernes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
+            </LinearLayout>
+
+            <!-- Sábado -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sábado" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchSabado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abierto"/>
+            <LinearLayout android:id="@+id/layoutHorasSabado" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etAperturaSabado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
+                <EditText android:id="@+id/etCierreSabado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
+            </LinearLayout>
+
+            <!-- Domingo -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Domingo" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchDomingo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Abierto"/>
+            <LinearLayout android:id="@+id/layoutHorasDomingo" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etAperturaDomingo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
+                <EditText android:id="@+id/etCierreDomingo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnGuardarHorario"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Guardar Horario"
+                android:layout_marginTop="32dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
