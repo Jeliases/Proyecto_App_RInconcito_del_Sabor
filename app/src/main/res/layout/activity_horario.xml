@@ -5,27 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="#F9F9F9">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:elevation="1dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Gestionar Horario"
+            app:titleTextColor="#111111"
             app:navigationIcon="@drawable/ic_arrow_back"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
-
+            app:navigationIconTint="#111111" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,96 +37,232 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Lunes -->
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lunes" style="@style/TextAppearance.Material3.TitleMedium"/>
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchLunes"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Abierto"/>
-            <LinearLayout android:id="@+id/layoutHorasLunes" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:id="@+id/etAperturaLunes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
-                <EditText android:id="@+id/etCierreLunes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
-            </LinearLayout>
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-            <!-- Martes -->
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Martes" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchMartes"
-                android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Lunes"
+                            android:textColor="#111111"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchLunes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="Abierto" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutHorasLunes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp"
+                            app:boxStrokeColor="#D32F2F"
+                            app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etAperturaLunes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:hint="Apertura" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            app:boxStrokeColor="#D32F2F"
+                            app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCierreLunes"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:focusable="false"
+                                android:hint="Cierre" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Abierto"/>
-            <LinearLayout android:id="@+id/layoutHorasMartes" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:id="@+id/etAperturaMartes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
-                <EditText android:id="@+id/etCierreMartes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
-            </LinearLayout>
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="Martes" android:textColor="#111111" android:textSize="18sp" android:textStyle="bold" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchMartes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Abierto" />
+                    </RelativeLayout>
+                    <LinearLayout android:id="@+id/layoutHorasMartes" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etAperturaMartes" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Apertura" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCierreMartes" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Cierre" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Miércoles -->
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Miércoles" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchMiercoles"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Abierto"/>
-            <LinearLayout android:id="@+id/layoutHorasMiercoles" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:id="@+id/etAperturaMiercoles" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
-                <EditText android:id="@+id/etCierreMiercoles" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
-            </LinearLayout>
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="Miércoles" android:textColor="#111111" android:textSize="18sp" android:textStyle="bold" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchMiercoles" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Abierto" />
+                    </RelativeLayout>
+                    <LinearLayout android:id="@+id/layoutHorasMiercoles" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etAperturaMiercoles" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Apertura" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCierreMiercoles" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Cierre" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Jueves -->
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Jueves" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchJueves"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Abierto"/>
-            <LinearLayout android:id="@+id/layoutHorasJueves" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:id="@+id/etAperturaJueves" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
-                <EditText android:id="@+id/etCierreJueves" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
-            </LinearLayout>
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="Jueves" android:textColor="#111111" android:textSize="18sp" android:textStyle="bold" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchJueves" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Abierto" />
+                    </RelativeLayout>
+                    <LinearLayout android:id="@+id/layoutHorasJueves" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etAperturaJueves" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Apertura" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCierreJueves" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Cierre" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Viernes -->
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Viernes" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchViernes"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Abierto"/>
-            <LinearLayout android:id="@+id/layoutHorasViernes" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:id="@+id/etAperturaViernes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
-                <EditText android:id="@+id/etCierreViernes" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
-            </LinearLayout>
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="Viernes" android:textColor="#111111" android:textSize="18sp" android:textStyle="bold" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchViernes" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Abierto" />
+                    </RelativeLayout>
+                    <LinearLayout android:id="@+id/layoutHorasViernes" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etAperturaViernes" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Apertura" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCierreViernes" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Cierre" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Sábado -->
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sábado" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchSabado"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Abierto"/>
-            <LinearLayout android:id="@+id/layoutHorasSabado" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:id="@+id/etAperturaSabado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
-                <EditText android:id="@+id/etCierreSabado" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
-            </LinearLayout>
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="Sábado" android:textColor="#111111" android:textSize="18sp" android:textStyle="bold" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchSabado" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Abierto" />
+                    </RelativeLayout>
+                    <LinearLayout android:id="@+id/layoutHorasSabado" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etAperturaSabado" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Apertura" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCierreSabado" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Cierre" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <!-- Domingo -->
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Domingo" style="@style/TextAppearance.Material3.TitleMedium" android:layout_marginTop="16dp"/>
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/switchDomingo"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Abierto"/>
-            <LinearLayout android:id="@+id/layoutHorasDomingo" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-                <EditText android:id="@+id/etAperturaDomingo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Apertura" android:focusable="false"/>
-                <EditText android:id="@+id/etCierreDomingo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Cierre" android:focusable="false"/>
-            </LinearLayout>
+                android:layout_marginBottom="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="Domingo" android:textColor="#111111" android:textSize="18sp" android:textStyle="bold" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial android:id="@+id/switchDomingo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentEnd="true" android:text="Abierto" />
+                    </RelativeLayout>
+                    <LinearLayout android:id="@+id/layoutHorasDomingo" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:orientation="horizontal">
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etAperturaDomingo" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Apertura" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="8dp" app:boxStrokeColor="#D32F2F" app:hintTextColor="#D32F2F">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etCierreDomingo" android:layout_width="match_parent" android:layout_height="wrap_content" android:focusable="false" android:hint="Cierre" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardarHorario"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:layout_marginTop="16dp"
                 android:text="Guardar Horario"
-                android:layout_marginTop="32dp"/>
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:backgroundTint="#D32F2F"
+                app:cornerRadius="16dp" />
 
         </LinearLayout>
     </ScrollView>

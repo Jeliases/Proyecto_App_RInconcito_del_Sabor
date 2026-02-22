@@ -85,11 +85,12 @@
             android:insetBottom="0dp"
             android:text="Agregar"
             android:textAllCaps="false"
+            android:textColor="#FFFFFF"
             android:textSize="12sp"
+            app:backgroundTint="#D32F2F"
             app:cornerRadius="18dp"
             app:layout_constraintBottom_toBottomOf="@+id/cardImgPlato"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

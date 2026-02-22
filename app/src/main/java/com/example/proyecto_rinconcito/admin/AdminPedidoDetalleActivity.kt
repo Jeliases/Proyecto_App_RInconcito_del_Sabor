@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.proyecto_rinconcito.R
+import com.example.proyecto_rinconcito.admin.AdminPedidoItemsAdapter
 import com.example.proyecto_rinconcito.databinding.ActivityAdminPedidoDetalleBinding
 import com.example.proyecto_rinconcito.models.Pedido
 import com.google.firebase.firestore.FirebaseFirestore

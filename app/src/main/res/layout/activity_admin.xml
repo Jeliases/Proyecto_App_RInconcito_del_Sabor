@@ -4,24 +4,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="#F9F9F9">
 
-    <!-- Top App Bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:elevation="1dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Panel de Administrador"
-            app:menu="@menu/admin_toolbar_menu" 
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+            app:title="Panel de Administración"
+            app:titleTextColor="#111111"
+            app:menu="@menu/admin_toolbar_menu" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Contenedor para los fragmentos (Pedidos y Menú) -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_admin"
         android:layout_width="match_parent"
@@ -29,24 +29,27 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_marginBottom="?attr/actionBarSize"/>
 
-    <!-- Botón Flotante -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:layout_marginBottom="72dp"
         android:contentDescription="Añadir"
         app:srcCompat="@drawable/ic_add"
         app:tint="@android:color/white"
-        app:backgroundTint="#D32F2F"/>
+        app:backgroundTint="#D32F2F"
+        app:elevation="4dp"/>
 
-    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        app:itemIconTint="@color/selector_bottom_nav"
+        app:itemTextColor="@color/selector_bottom_nav"
         app:menu="@menu/admin_bottom_nav_menu" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

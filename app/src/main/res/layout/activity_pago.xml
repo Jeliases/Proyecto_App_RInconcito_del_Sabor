@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="#F9F9F9">
 
-    <!-- Top App Bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:elevation="1dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -21,17 +22,18 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Confirmar Pago"
+            app:titleTextColor="#111111"
             app:navigationIcon="@drawable/ic_arrow_back"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
-
+            app:navigationIconTint="#111111" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Scrollable Content -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-        app:layout_constraintBottom_toTopOf="@+id/btnEnviarComprobante"
+        app:layout_constraintBottom_toTopOf="@+id/bottomContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -39,92 +41,111 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="24dp"
             android:gravity="center_horizontal">
 
-            <!-- Total a pagar -->
             <TextView
                 android:id="@+id/tvTotalPagoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Total a Pagar"
-                android:textSize="20sp"
-                android:textColor="@android:color/darker_gray"/>
+                android:textSize="16sp"
+                android:textColor="#666666"/>
 
             <TextView
                 android:id="@+id/tvTotalPago"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="S/ 120.50"
-                android:textSize="34sp"
+                android:textSize="36sp"
                 android:textStyle="bold"
                 android:textColor="#D32F2F"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="4dp"/>
 
-            <!-- QR Code -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardQR"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="8dp"
-                android:layout_marginTop="16dp">
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginTop="24dp">
 
                 <ImageView
                     android:id="@+id/imgQR"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
+                    android:layout_width="220dp"
+                    android:layout_height="220dp"
+                    android:padding="16dp"
                     android:src="@drawable/qr_yape"
                     android:contentDescription="Código QR para pago"/>
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/tvScanInstruction"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1. Escanea el QR para pagar"
-                android:layout_marginTop="16dp"
-                android:textColor="@android:color/darker_gray"/>
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2. Sube tu comprobante"
-                android:layout_marginTop="4dp"
-                android:textColor="@android:color/darker_gray"/>
+                android:orientation="vertical"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_rounded_light"
+                android:padding="16dp">
 
-            <!-- Vista previa del comprobante -->
-            <ImageView
-                android:id="@+id/ivComprobantePreview"
-                android:layout_width="150dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="16dp"
-                android:scaleType="centerCrop"
-                android:background="#F0F0F0"
-                android:visibility="gone" 
-                tools:visibility="visible"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. Escanea el QR y realiza el pago"
+                    android:textColor="#111111"
+                    android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/btnSeleccionarComprobante"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Seleccionar Comprobante"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2. Sube la captura de pantalla de tu comprobante"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#111111"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/ivComprobantePreview"
+                    android:layout_width="120dp"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSeleccionarComprobante"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="16dp"
+                    app:strokeColor="#D32F2F"
+                    android:textColor="#D32F2F"
+                    android:text="Adjuntar Comprobante"/>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón de Enviar Comprobante -->
-    <Button
-        android:id="@+id/btnEnviarComprobante"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:text="Enviar Comprobante"
-        android:enabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+    <LinearLayout
+        android:id="@+id/bottomContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:padding="16dp"
+        android:elevation="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEnviarComprobante"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Enviar Comprobante"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:backgroundTint="#D32F2F"
+            app:cornerRadius="16dp"
+            android:enabled="false"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

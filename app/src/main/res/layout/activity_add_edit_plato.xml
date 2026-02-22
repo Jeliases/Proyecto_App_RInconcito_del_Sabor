@@ -7,20 +7,21 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <!-- Top App Bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:elevation="1dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            app:navigationIconTint="#111111"
+            app:titleTextColor="#111111"
             tools:title="Añadir Plato"/>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
@@ -32,50 +33,60 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="24dp">
 
-            <!-- Imagen del Plato -->
-            <ImageView
-                android:id="@+id/ivPlatoPreview"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:background="#F0F0F0"
-                android:contentDescription="Vista previa de la imagen del plato"/>
+                android:layout_height="220dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#E0E0E0">
 
-            <Button
+                <ImageView
+                    android:id="@+id/ivPlatoPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="#F5F5F5"
+                    android:contentDescription="Vista previa"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSeleccionarImagen"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Seleccionar Imagen"
+                android:text="Subir Foto"
+                android:textColor="#D32F2F"
+                app:strokeColor="#D32F2F"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="16dp"/>
 
-            <!-- Nombre del Plato -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nombre del Plato"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginTop="16dp">
-
+                app:boxStrokeColor="#D32F2F"
+                app:hintTextColor="#D32F2F"
+                android:layout_marginTop="24dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Descripción -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilDescripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Descripción"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginTop="8dp">
-
+                app:boxStrokeColor="#D32F2F"
+                app:hintTextColor="#D32F2F"
+                android:layout_marginTop="16dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDescripcion"
                     android:layout_width="match_parent"
@@ -84,16 +95,16 @@
                     android:gravity="top"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Precio -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPrecio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Precio (ej. 25.50)"
+                android:hint="Precio"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="#D32F2F"
+                app:hintTextColor="#D32F2F"
                 app:prefixText="S/ "
-                android:layout_marginTop="8dp">
-
+                android:layout_marginTop="16dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPrecio"
                     android:layout_width="match_parent"
@@ -101,31 +112,32 @@
                     android:inputType="numberDecimal"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Categoría -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilCategoria"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                app:boxStrokeColor="#D32F2F"
+                app:hintTextColor="#D32F2F"
                 android:hint="Categoría">
-
                 <AutoCompleteTextView
                     android:id="@+id/actvCategoria"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Botón Guardar -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGuardar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:text="Guardar Plato"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"/>
+                app:backgroundTint="#D32F2F"
+                android:textColor="@android:color/white"
+                app:cornerRadius="12dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="24dp"/>
 
         </LinearLayout>
     </ScrollView>

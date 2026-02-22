@@ -5,157 +5,199 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="#F9F9F9">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:elevation="1dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Detalle del Pedido"
+            app:titleTextColor="#111111"
             app:navigationIcon="@drawable/ic_arrow_back"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
-
+            app:navigationIconTint="#111111"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/tvCodigoPedido"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Pedido #123456"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/tvNombreCliente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Cliente: Nombre Apellido"
-            android:layout_marginTop="4dp"/>
-
-        <TextView
-            android:id="@+id/tvFechaPedido"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Fecha: 25/05/2024, 10:30 AM"
-            android:layout_marginTop="4dp"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipEstado"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:text="EN PREPARACION"/>
-
-        <Button
-            android:id="@+id/btnVerComprobante"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ver Comprobante de Pago"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_marginTop="12dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Items del Pedido"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerItemsPedido"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="8dp"/>
-
-        <TextView
-            android:id="@+id/tvTotal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="#D32F2F"
-            android:layout_marginTop="8dp"
-            tools:text="Total: S/ 120.50"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/layoutBotonesAccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:padding="16dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvCodigoPedido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Pedido #123456"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="#111111"/>
+
+                    <TextView
+                        android:id="@+id/tvNombreCliente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Cliente: Nombre Apellido"
+                        android:textColor="#444444"
+                        android:layout_marginTop="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvFechaPedido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Fecha: 25/05/2024, 10:30 AM"
+                        android:textColor="#666666"
+                        android:layout_marginTop="4dp"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipEstado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:chipBackgroundColor="#FFEBEE"
+                        android:textColor="#D32F2F"
+                        tools:text="EN PREPARACIÓN"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerComprobante"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Ver Comprobante de Pago"
+                android:textColor="#D32F2F"
+                app:strokeColor="#D32F2F"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Items del Pedido"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#111111"
+                android:layout_marginTop="24dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerItemsPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#D32F2F"
+                android:layout_marginTop="16dp"
+                tools:text="Total: S/ 120.50"/>
 
             <LinearLayout
-                android:id="@+id/layoutVerificarPago"
+                android:id="@+id/layoutBotonesAccion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:orientation="vertical"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="24dp">
 
-                <Button
-                    android:id="@+id/btnRechazarPago"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/layoutVerificarPago"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Rechazar"
-                    android:layout_marginEnd="8dp"/>
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
-                <Button
-                    android:id="@+id/btnConfirmarPago"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Confirmar Pago"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRechazarPago"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:text="Rechazar"
+                        app:strokeColor="#D32F2F"
+                        android:textColor="#D32F2F"
+                        android:layout_marginEnd="8dp"/>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnPrepararPedido"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Marcar EN PREPARACIÓN"
+                        android:textColor="@android:color/white"
+                        app:backgroundTint="#D32F2F" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnConfirmarPago"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        app:backgroundTint="#D32F2F"
+                        android:textColor="@android:color/white"
+                        android:text="Confirmar Pago"/>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPedidoListo"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:backgroundTint="#D32F2F"
+                    android:textColor="@android:color/white"
+                    android:layout_marginTop="8dp"
+                    android:text="Marcar LISTO PARA RECOGER"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEntregarPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:backgroundTint="#D32F2F"
+                    android:textColor="@android:color/white"
+                    android:layout_marginTop="8dp"
+                    android:text="Marcar ENTREGADO"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCancelarPedido"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Cancelar Pedido"
+                    android:textColor="#9E9E9E"
+                    android:layout_marginTop="16dp"/>
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnPrepararPedido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Marcar como EN PREPARACIÓN"/>
-
-            <Button
-                android:id="@+id/btnPedidoListo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Marcar como LISTO PARA RECOGER"/>
-
-            <Button
-                android:id="@+id/btnEntregarPedido"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Marcar como ENTREGADO"/>
-
-            <Button
-                android:id="@+id/btnCancelarPedido"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cancelar Pedido"
-                android:textColor="#D32F2F"
-                android:layout_marginTop="8dp"/>
         </LinearLayout>
-
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

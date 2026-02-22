@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- Top App Bar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -24,7 +23,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Banner de Restaurante Cerrado -->
     <TextView
         android:id="@+id/tvRestauranteCerrado"
         android:layout_width="match_parent"
@@ -34,11 +32,10 @@
         android:textColor="@android:color/black"
         android:padding="8dp"
         android:gravity="center"
-        android:visibility="gone" 
+        android:visibility="gone"
         app:layout_anchor="@id/appBarLayout"
         app:layout_anchorGravity="bottom"/>
 
-    <!-- Scrollable content area -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,61 +45,57 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="88dp"> <!-- Padding for FAB -->
+            android:paddingBottom="88dp"> <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardBanner"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="4dp">
 
-            <!-- Banner -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardBanner"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="4dp">
+                android:layout_height="match_parent"
+                android:background="#D32F2F"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#D32F2F"
-                    android:padding="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:text="Descubre"
+                        android:textColor="#FFFFFF"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Descubre"
-                            android:textColor="#FFFFFF"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="el placer de comer"
-                            android:textColor="#FFECEC"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="120dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="Logo Rinconcito"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/logo_rinconcito" />
-
+                        android:text="el placer de comer"
+                        android:textColor="#FFECEC"
+                        android:textSize="14sp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Logo Rinconcito"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/logo_rinconcito" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
 
-            <!-- Categorías -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,43 +112,60 @@
                     android:gravity="center_vertical">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCatBroaster"
+                        android:id="@+id/btnCatTodos"
                         style="@style/Widget.Material3.Button.TonalButton"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
-                        android:text="Broaster"
+                        android:text="Todos"
                         android:textSize="12sp"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCatParrilla"
+                        android:id="@+id/btnCatCaldos"
                         style="@style/Widget.Material3.Button.TonalButton"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_marginStart="8dp"
-                        android:text="Parrilla"
+                        android:text="Caldos"
                         android:textSize="12sp"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCatEnsaladas"
+                        android:id="@+id/btnCatSaltados"
                         style="@style/Widget.Material3.Button.TonalButton"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_marginStart="8dp"
-                        android:text="Ensaladas"
+                        android:text="Saltados"
                         android:textSize="12sp"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCatBebidas"
+                        android:id="@+id/btnCatChifa"
                         style="@style/Widget.Material3.Button.TonalButton"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_marginStart="8dp"
-                        android:text="Bebidas"
+                        android:text="Chifa"
+                        android:textSize="12sp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCatSegundos"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="8dp"
+                        android:text="Segundos"
+                        android:textSize="12sp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCatRefrescos"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="8dp"
+                        android:text="Refrescos"
                         android:textSize="12sp"/>
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <!-- Favoritos -->
             <TextView
                 android:id="@+id/tvFavoritos"
                 android:layout_width="match_parent"
@@ -177,7 +187,6 @@
                 android:layout_marginEnd="16dp"
                 android:nestedScrollingEnabled="false"/>
 
-            <!-- Menú -->
             <TextView
                 android:id="@+id/tvMenu"
                 android:layout_width="match_parent"
@@ -202,7 +211,6 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Carrito (Floating) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnCarrito"
         android:layout_width="wrap_content"

@@ -1,9 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Proyecto_Rinconcito" parent="Theme.Material3.DayNight.NoActionBar">
 
+        <item name="android:statusBarColor">#FFFFFF</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="colorPrimary">#D32F2F</item>
+        <item name="colorSecondary">#D32F2F</item>
 
     </style>
-
-    <style name="Theme.Proyecto_Rinconcito" parent="Base.Theme.Proyecto_Rinconcito" />
 </resources>

@@ -9,7 +9,7 @@
         android:id="@+id/ivDialogImage"
         android:layout_width="300dp"
         android:layout_height="400dp"
-        android:scaleType="fitCenter"
-        android:contentDescription="Visor de imagen"/>
+        android:contentDescription="Visor de imagen"
+        android:scaleType="fitCenter" />
 
 </LinearLayout>

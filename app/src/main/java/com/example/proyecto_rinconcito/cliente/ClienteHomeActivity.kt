@@ -34,6 +34,9 @@ class ClienteHomeActivity : AppCompatActivity() {
     private var horarioListener: ListenerRegistration? = null
     private var isRestaurantOpen = true
 
+    // NUEVO: Variable para guardar toda la lista de platos de Firebase sin filtros
+    private var listaCompletaMenu: List<Plato> = listOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClienteHomeBinding.inflate(layoutInflater)
@@ -46,6 +49,7 @@ class ClienteHomeActivity : AppCompatActivity() {
         setupAdapters()
         setupRecyclerViews()
         setupListeners()
+        setupFiltros() // NUEVO: Inicializar los botones de categoría
 
         escucharEstadoDelRestaurante()
         cargarFavoritos()
@@ -131,6 +135,7 @@ class ClienteHomeActivity : AppCompatActivity() {
         isRestaurantOpen = manualOpen && horarioOpen
         actualizarUI(isRestaurantOpen)
     }
+
     private fun actualizarUI(isOpen: Boolean) {
         binding.tvRestauranteCerrado.visibility = if (isOpen) View.GONE else View.VISIBLE
         binding.btnCarrito.visibility = if (isOpen) View.VISIBLE else View.GONE
@@ -138,8 +143,6 @@ class ClienteHomeActivity : AppCompatActivity() {
         if (::platosAdapter.isInitialized) platosAdapter.setRestaurantOpen(isOpen)
         if (::favoritosAdapter.isInitialized) favoritosAdapter.setRestaurantOpen(isOpen)
     }
-    
-
 
     private fun setupToolbar() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -180,6 +183,30 @@ class ClienteHomeActivity : AppCompatActivity() {
         }
     }
 
+    // NUEVO: Configurar los clicks de los botones de categoría
+    private fun setupFiltros() {
+        binding.btnCatTodos.setOnClickListener { filtrarMenu("Todos") }
+        binding.btnCatCaldos.setOnClickListener { filtrarMenu("Caldos") }
+        binding.btnCatSaltados.setOnClickListener { filtrarMenu("Saltados") }
+        binding.btnCatChifa.setOnClickListener { filtrarMenu("Chifa") }
+        binding.btnCatSegundos.setOnClickListener { filtrarMenu("Segundos") }
+        binding.btnCatRefrescos.setOnClickListener { filtrarMenu("Refrescos") } // Aquí están los Refrescos
+    }
+
+    // NUEVO: La función que filtra la lista y actualiza el RecyclerView
+    private fun filtrarMenu(categoriaSeleccionada: String) {
+        val listaFiltrada = if (categoriaSeleccionada == "Todos") {
+            listaCompletaMenu
+        } else {
+            // Filtramos ignorando mayúsculas, minúsculas y espacios en blanco
+            listaCompletaMenu.filter { plato ->
+                plato.categoria.trim().equals(categoriaSeleccionada.trim(), ignoreCase = true)
+            }
+        }
+
+        platosAdapter.setData(listaFiltrada)
+    }
+
     private fun cargarFavoritos() {
         db.collection("platos").whereEqualTo("favorito", true).get()
             .addOnSuccessListener { snap ->
@@ -191,8 +218,11 @@ class ClienteHomeActivity : AppCompatActivity() {
     private fun cargarMenu() {
         db.collection("platos").get()
             .addOnSuccessListener { snap ->
-                val list = snap.toObjects(Plato::class.java)
-                platosAdapter.setData(list)
+                // NUEVO: Guardamos la lista completa primero
+                listaCompletaMenu = snap.toObjects(Plato::class.java)
+
+                // Luego mostramos la lista completa al inicio
+                platosAdapter.setData(listaCompletaMenu)
             }
     }
 
@@ -210,7 +240,6 @@ class ClienteHomeActivity : AppCompatActivity() {
 
                 statusListener?.remove()
                 horarioListener?.remove()
-
 
                 auth.signOut()
 
