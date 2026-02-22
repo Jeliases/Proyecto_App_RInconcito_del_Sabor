@@ -117,6 +117,9 @@ class AdminActivity : AppCompatActivity() {
             .setMessage("¿Seguro que deseas cerrar sesión?")
             .setCancelable(false)
             .setPositiveButton("Sí") { _, _ ->
+
+                restaurantStatusListener?.remove()
+
                 auth.signOut()
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

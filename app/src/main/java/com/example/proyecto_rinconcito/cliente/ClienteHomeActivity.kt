@@ -82,8 +82,9 @@ class ClienteHomeActivity : AppCompatActivity() {
     }
 
     private fun verificarDisponibilidad(manualOpen: Boolean, horario: Horario?) {
-        val calendar = Calendar.getInstance()
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) // Domingo = 1, Sábado = 7
+
+        val ahora = Calendar.getInstance()
+        val dayOfWeek = ahora.get(Calendar.DAY_OF_WEEK)
 
         val diaActual = when (dayOfWeek) {
             Calendar.MONDAY -> horario?.lunes
@@ -97,24 +98,32 @@ class ClienteHomeActivity : AppCompatActivity() {
         }
 
         var horarioOpen = false
+
         if (diaActual?.abierto == true) {
             try {
                 val sdf = SimpleDateFormat("hh:mm a", Locale.US)
-                val ahora = calendar.time
-                val apertura = sdf.parse(diaActual.apertura)
-                val cierre = sdf.parse(diaActual.cierre)
 
-                val calApertura = Calendar.getInstance().apply { time = apertura }
-                val calCierre = Calendar.getInstance().apply { time = cierre }
+                val aperturaDate = sdf.parse(diaActual.apertura)
+                val cierreDate = sdf.parse(diaActual.cierre)
 
-                val calAhora = Calendar.getInstance().apply {
-                    set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY))
-                    set(Calendar.MINUTE, calendar.get(Calendar.MINUTE))
+                val calApertura = Calendar.getInstance().apply { time = aperturaDate!! }
+                val calCierre = Calendar.getInstance().apply { time = cierreDate!! }
+
+
+                val ahoraMinutos = ahora.get(Calendar.HOUR_OF_DAY) * 60 + ahora.get(Calendar.MINUTE)
+                val aperturaMinutos = calApertura.get(Calendar.HOUR_OF_DAY) * 60 + calApertura.get(Calendar.MINUTE)
+                val cierreMinutos = calCierre.get(Calendar.HOUR_OF_DAY) * 60 + calCierre.get(Calendar.MINUTE)
+
+                if (aperturaMinutos <= cierreMinutos) {
+
+                    horarioOpen = ahoraMinutos in aperturaMinutos..cierreMinutos
+                } else {
+
+                    horarioOpen = ahoraMinutos >= aperturaMinutos || ahoraMinutos <= cierreMinutos
                 }
-                
-                horarioOpen = calAhora.after(calApertura) && calAhora.before(calCierre)
 
             } catch (e: Exception) {
+                e.printStackTrace()
                 horarioOpen = false
             }
         }
@@ -122,7 +131,6 @@ class ClienteHomeActivity : AppCompatActivity() {
         isRestaurantOpen = manualOpen && horarioOpen
         actualizarUI(isRestaurantOpen)
     }
-
     private fun actualizarUI(isOpen: Boolean) {
         binding.tvRestauranteCerrado.visibility = if (isOpen) View.GONE else View.VISIBLE
         binding.btnCarrito.visibility = if (isOpen) View.VISIBLE else View.GONE
@@ -131,7 +139,7 @@ class ClienteHomeActivity : AppCompatActivity() {
         if (::favoritosAdapter.isInitialized) favoritosAdapter.setRestaurantOpen(isOpen)
     }
     
-    // ... (El resto de las funciones se mantienen igual)
+
 
     private fun setupToolbar() {
         binding.topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -199,7 +207,13 @@ class ClienteHomeActivity : AppCompatActivity() {
             .setMessage("¿Seguro que deseas cerrar sesión?")
             .setCancelable(false)
             .setPositiveButton("Sí") { _, _ ->
+
+                statusListener?.remove()
+                horarioListener?.remove()
+
+
                 auth.signOut()
+
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)

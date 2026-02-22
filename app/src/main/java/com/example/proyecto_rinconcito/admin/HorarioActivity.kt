@@ -58,10 +58,12 @@ class HorarioActivity : AppCompatActivity() {
         val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
             cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
             cal.set(Calendar.MINUTE, minute)
-            editText.setText(SimpleDateFormat("hh:mm a", Locale.getDefault()).format(cal.time))
+
+            editText.setText(SimpleDateFormat("hh:mm a", Locale.US).format(cal.time))
         }
         TimePickerDialog(this, timeSetListener, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false).show()
     }
+
 
     private fun cargarHorario(){
         horarioRef.get().addOnSuccessListener { doc ->
