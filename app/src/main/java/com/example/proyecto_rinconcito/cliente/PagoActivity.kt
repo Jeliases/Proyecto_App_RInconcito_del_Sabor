@@ -78,21 +78,39 @@ class PagoActivity : AppCompatActivity() {
     }
 
     private fun subirComprobanteYActualizarPedido() {
+
+        if (imagenComprobanteUri == null) {
+            Toast.makeText(this, "Por favor, selecciona una imagen primero.", Toast.LENGTH_LONG).show()
+            return
+        }
+
+
         binding.btnEnviarComprobante.isEnabled = false
+        binding.btnEnviarComprobante.text = "Subiendo comprobante..."
+
         val filename = UUID.randomUUID().toString()
         val ref = storage.reference.child("comprobantes/$filename")
 
-        imagenComprobanteUri?.let {
-            ref.putFile(it)
-                .addOnSuccessListener {
-                    ref.downloadUrl.addOnSuccessListener { url ->
-                        actualizarPedido(url.toString())
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error al subir el comprobante: ${e.message}", Toast.LENGTH_SHORT).show()
-                    binding.btnEnviarComprobante.isEnabled = true
-                }
+
+        val uploadTask = ref.putFile(imagenComprobanteUri!!)
+
+
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let { throw it }
+            }
+            ref.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+
+                val downloadUri = task.result
+                actualizarPedido(downloadUri.toString())
+            } else {
+
+                Toast.makeText(this, "Error al subir: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                binding.btnEnviarComprobante.isEnabled = true
+                binding.btnEnviarComprobante.text = "Enviar Comprobante"
+            }
         }
     }
 
