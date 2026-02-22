@@ -40,7 +40,7 @@ class PlatosAdapter(
 
         Glide.with(holder.itemView.context).load(p.imagenUrl).into(holder.imgPlato)
 
-        val isAvailable = p.disponible && isRestaurantOpen
+        val isAvailable = p.activo&& isRestaurantOpen
 
         holder.btnAgregar.isEnabled = isAvailable
         holder.itemView.alpha = if (isAvailable) 1.0f else 0.6f
@@ -49,7 +49,7 @@ class PlatosAdapter(
             holder.btnAgregar.text = "Agregar"
             holder.btnAgregar.setOnClickListener { onAgregar(p) }
         } else {
-            holder.btnAgregar.text = if (!p.disponible) "Agotado" else "Cerrado"
+            holder.btnAgregar.text = if (!p.activo) "Agotado" else "Cerrado"
             holder.btnAgregar.setOnClickListener(null)
         }
     }

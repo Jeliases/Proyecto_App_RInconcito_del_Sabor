@@ -1,11 +1,11 @@
 package com.example.proyecto_rinconcito.admin
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.bumptech.glide.Glide
@@ -25,9 +25,13 @@ class AddEditPlatoActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
 
-    companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-    }
+    private val imagePickerLauncher: ActivityResultLauncher<String> = 
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? -> 
+            uri?.let {
+                imagenUri = it
+                Glide.with(this).load(imagenUri).into(binding.ivPlatoPreview)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +73,7 @@ class AddEditPlatoActivity : AppCompatActivity() {
     }
 
     private fun cargarDatosDelPlato() {
-        platoId?.let {
+        platoId?.let { 
             db.collection("platos").document(it).get()
                 .addOnSuccessListener { doc ->
                     if (doc.exists()) {
@@ -96,16 +100,7 @@ class AddEditPlatoActivity : AppCompatActivity() {
     }
 
     private fun abrirSelectorDeImagen() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply { type = "image/*" }
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data?.data != null) {
-            imagenUri = data.data
-            Glide.with(this).load(imagenUri).into(binding.ivPlatoPreview)
-        }
+        imagePickerLauncher.launch("image/*")
     }
 
     private fun guardarPlato() {
@@ -156,7 +151,7 @@ class AddEditPlatoActivity : AppCompatActivity() {
             imagenUrl = imageUrl,
             // Preservar los valores existentes al editar, o usar defaults al crear
             favorito = platoActual?.favorito ?: false,
-            disponible = platoActual?.disponible ?: true 
+            activo = platoActual?.activo ?: true 
         )
 
         db.collection("platos").document(id).set(plato)

@@ -8,5 +8,5 @@ data class Plato(
     var categoria: String = "",
     var favorito: Boolean = false,
     var imagenUrl: String = "",
-    var disponible: Boolean = true // Nuevo campo para gestionar la disponibilidad
+    var activo: Boolean = true
 )

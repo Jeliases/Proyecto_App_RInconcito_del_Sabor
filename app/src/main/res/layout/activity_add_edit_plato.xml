@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             tools:title="Añadir Plato"/>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -58,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nombre del Plato"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_marginTop="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -73,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Descripción"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -90,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Precio (ej. 25.50)"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 app:prefixText="S/ "
                 android:layout_marginTop="8dp">
 

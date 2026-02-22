@@ -2,6 +2,7 @@ package com.example.proyecto_rinconcito.admin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.example.proyecto_rinconcito.models.Plato
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.storage.FirebaseStorage
+import java.lang.Exception
 
 class AdminMenuFragment : Fragment() {
 
@@ -70,14 +72,32 @@ class AdminMenuFragment : Fragment() {
         platosListener = db.collection("platos")
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
+                    Log.w("AdminMenuFragment", "Error al escuchar cambios en el menú", error)
                     Toast.makeText(requireContext(), "Error al cargar el menú", Toast.LENGTH_SHORT).show()
                     return@addSnapshotListener
                 }
 
                 if (snapshot != null) {
+                    val nuevosPlatos = snapshot.documents.mapNotNull { doc ->
+                        try {
+                            // Construcción manual y segura del objeto Plato para garantizar el ID
+                            Plato(
+                                id = doc.id, // <--
+                                nombre = doc.getString("nombre") ?: "",
+                                descripcion = doc.getString("descripcion") ?: "",
+                                precio = (doc.get("precio") as? Number)?.toDouble() ?: 0.0,
+                                categoria = doc.getString("categoria") ?: "",
+                                favorito = doc.getBoolean("favorito") ?: false,
+                                imagenUrl = doc.getString("imagenUrl") ?: "",
+                                activo = doc.getBoolean("activo") ?: true
+                            )
+                        } catch (e: Exception) {
+                            Log.e("AdminMenuFragment", "Error al procesar el plato ${doc.id}", e)
+                            null
+                        }
+                    }
                     listaPlatos.clear()
-                    val platos = snapshot.toObjects(Plato::class.java)
-                    listaPlatos.addAll(platos)
+                    listaPlatos.addAll(nuevosPlatos)
                     adapter.notifyDataSetChanged()
                 }
             }
@@ -95,23 +115,44 @@ class AdminMenuFragment : Fragment() {
     }
 
     private fun eliminarPlato(plato: Plato) {
+        if (plato.id.isEmpty()) {
+            Toast.makeText(requireContext(), "Error: ID de plato inválido.", Toast.LENGTH_SHORT).show()
+            return
+        }
         db.collection("platos").document(plato.id).delete()
             .addOnSuccessListener {
-                val imagenRef = storage.getReferenceFromUrl(plato.imagenUrl)
-                imagenRef.delete()
-                    .addOnSuccessListener { Toast.makeText(requireContext(), "'${plato.nombre}' eliminado con éxito.", Toast.LENGTH_SHORT).show() }
-                    .addOnFailureListener { Toast.makeText(requireContext(), "Plato eliminado, pero hubo un error al borrar la imagen.", Toast.LENGTH_LONG).show() }
+                if (plato.imagenUrl.isNotEmpty()){
+                    try {
+                        val imagenRef = storage.getReferenceFromUrl(plato.imagenUrl)
+                        imagenRef.delete()
+                            .addOnSuccessListener { 
+                                Toast.makeText(requireContext(), "'${plato.nombre}' eliminado con éxito.", Toast.LENGTH_SHORT).show() 
+                            }
+                            .addOnFailureListener { 
+                                Toast.makeText(requireContext(), "Plato eliminado, pero hubo un error al borrar la imagen.", Toast.LENGTH_LONG).show() 
+                            }
+                    } catch(e: Exception) {
+                        Log.e("AdminMenuFragment", "URL de imagen inválida al eliminar: ${plato.imagenUrl}", e)
+                        Toast.makeText(requireContext(), "'${plato.nombre}' eliminado. No se pudo borrar la imagen (URL inválida).", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "'${plato.nombre}' eliminado con éxito.", Toast.LENGTH_SHORT).show()
+                }
             }
             .addOnFailureListener { e -> Toast.makeText(requireContext(), "Error al eliminar el plato: ${e.message}", Toast.LENGTH_LONG).show() }
     }
 
-    private fun actualizarDisponibilidad(plato: Plato, disponible: Boolean) {
+    private fun actualizarDisponibilidad(plato: Plato, activo: Boolean) {
+        if (plato.id.isEmpty()) {
+            Toast.makeText(requireContext(), "Error: ID de plato inválido.", Toast.LENGTH_SHORT).show()
+            adapter.notifyDataSetChanged() // Revertir visualmente el switch
+            return
+        }
         db.collection("platos").document(plato.id)
-            .update("disponible", disponible)
+            .update("activo", activo)
             .addOnFailureListener { e ->
-                // Si falla, revertir el switch y mostrar un error
-                Toast.makeText(requireContext(), "Error al actualizar la disponibilidad: ${e.message}", Toast.LENGTH_SHORT).show()
-                adapter.notifyDataSetChanged() // Para que el switch vuelva a su estado original
+                Toast.makeText(requireContext(), "Error al actualizar: ${e.message}", Toast.LENGTH_SHORT).show()
+                adapter.notifyDataSetChanged()
             }
     }
 }

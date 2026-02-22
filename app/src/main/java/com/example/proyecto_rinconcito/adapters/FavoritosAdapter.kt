@@ -34,7 +34,7 @@ class FavoritosAdapter(
 
         Glide.with(holder.itemView.context).load(p.imagenUrl).into(holder.imgPlato)
 
-        val isAvailable = p.disponible && isRestaurantOpen
+        val isAvailable = p.activo && isRestaurantOpen
 
         holder.itemView.alpha = if (isAvailable) 1.0f else 0.6f
         holder.itemView.isClickable = isAvailable

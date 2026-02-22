@@ -27,7 +27,7 @@ class AdminPlatosAdapter(
         holder.binding.btnEditar.setOnClickListener { onEditClicked(plato) }
         holder.binding.btnEliminar.setOnClickListener { onDeleteClicked(plato) }
         holder.binding.switchDisponible.setOnCheckedChangeListener(null)
-        holder.binding.switchDisponible.isChecked = plato.disponible
+        holder.binding.switchDisponible.isChecked = plato.activo
         holder.binding.switchDisponible.setOnCheckedChangeListener { _, isChecked ->
             onDisponibilidadChanged(plato, isChecked)
         }
@@ -44,7 +44,7 @@ class AdminPlatosAdapter(
         fun bind(plato: Plato) {
             binding.tvNombrePlato.text = plato.nombre
             binding.tvPrecioPlato.text = String.format("S/ %.2f", plato.precio)
-            binding.switchDisponible.isChecked = plato.disponible
+            binding.switchDisponible.isChecked = plato.activo
 
             Glide.with(itemView.context)
                 .load(plato.imagenUrl)
