@@ -93,12 +93,13 @@ class AdminPedidoDetalleActivity : AppCompatActivity() {
 
     private fun actualizarVisibilidadBotones(estado: String) {
         binding.layoutVerificarPago.visibility = if (estado == "PAGO_EN_VERIFICACION") View.VISIBLE else View.GONE
-        binding.btnPrepararPedido.visibility = if (estado == "EN_PREPARACION") View.VISIBLE else View.GONE
-        binding.btnPedidoListo.visibility = if (estado == "LISTO_PARA_RECOGER") View.VISIBLE else View.GONE
-        binding.btnEntregarPedido.visibility = if (estado == "ENTREGADO") View.VISIBLE else View.GONE
 
-        // El botón de cancelar es visible en casi todos los estados, excepto en los finales
-        val isFinalizado = estado == "COMPLETADO" || estado == "CANCELADO"
+        binding.btnPrepararPedido.visibility = if (estado == "EN_PREPARACION") View.VISIBLE else View.GONE
+
+        binding.btnPedidoListo.visibility = if (estado == "LISTO_PARA_RECOGER") View.VISIBLE else View.GONE
+
+        binding.btnEntregarPedido.visibility = if (estado == "ENTREGADO") View.VISIBLE else View.GONE
+        val isFinalizado = estado == "COMPLETADO" || estado == "CANCELADO" || estado == "PAGO_RECHAZADO"
         binding.btnCancelarPedido.visibility = if (isFinalizado) View.GONE else View.VISIBLE
     }
 

@@ -13,3 +13,4 @@ data class Pedido(
     var codigoPedido: String = "",
     var comprobanteUrl: String? = null
 )
+

@@ -52,7 +52,7 @@
                         android:id="@+id/tvCodigoPedido"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Pedido #123456"
+                        tools:text="Pedido #361693"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:textColor="#111111"/>
@@ -61,7 +61,7 @@
                         android:id="@+id/tvNombreCliente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Cliente: Nombre Apellido"
+                        tools:text="Cliente: elviscocho1998op@gmail.com"
                         android:textColor="#444444"
                         android:layout_marginTop="8dp"/>
 
@@ -69,7 +69,7 @@
                         android:id="@+id/tvFechaPedido"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="Fecha: 25/05/2024, 10:30 AM"
+                        tools:text="Fecha: 23/02/2026, 10:19 PM"
                         android:textColor="#666666"
                         android:layout_marginTop="4dp"/>
 
@@ -80,7 +80,7 @@
                         android:layout_marginTop="12dp"
                         app:chipBackgroundColor="#FFEBEE"
                         android:textColor="#D32F2F"
-                        tools:text="EN PREPARACIÓN"/>
+                        tools:text="EN_PREPARACION"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -121,7 +121,7 @@
                 android:textStyle="bold"
                 android:textColor="#D32F2F"
                 android:layout_marginTop="16dp"
-                tools:text="Total: S/ 120.50"/>
+                tools:text="Total: S/ 14.00"/>
 
             <LinearLayout
                 android:id="@+id/layoutBotonesAccion"
@@ -151,15 +151,6 @@
                         android:layout_marginEnd="8dp"/>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnPrepararPedido"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="8dp"
-                        android:text="Marcar EN PREPARACIÓN"
-                        android:textColor="@android:color/white"
-                        app:backgroundTint="#D32F2F" />
-
-                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnConfirmarPago"
                         android:layout_width="0dp"
                         android:layout_height="56dp"
@@ -170,13 +161,26 @@
                 </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPrepararPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Marcar LISTO PARA RECOGER"
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#4CAF50"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPedidoListo"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    app:backgroundTint="#D32F2F"
+                    app:backgroundTint="#2196F3"
                     android:textColor="@android:color/white"
                     android:layout_marginTop="8dp"
-                    android:text="Marcar LISTO PARA RECOGER"/>
+                    android:text="Marcar ENTREGADO"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnEntregarPedido"
@@ -185,7 +189,9 @@
                     app:backgroundTint="#D32F2F"
                     android:textColor="@android:color/white"
                     android:layout_marginTop="8dp"
-                    android:text="Marcar ENTREGADO"/>
+                    android:text="Finalizar Pedido (COMPLETADO)"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancelarPedido"
