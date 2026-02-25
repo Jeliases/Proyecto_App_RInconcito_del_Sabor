@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.proyecto_rinconcito.adapters.MisPedidosAdapter
@@ -43,18 +44,51 @@ class MisPedidosActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = MisPedidosAdapter(emptyList()) { pedido ->
-            if (pedido.estado == "PENDIENTE_PAGO") {
-                val intent = Intent(this, PagoActivity::class.java)
-                intent.putExtra("pedidoId", pedido.id)
-                intent.putExtra("total", pedido.total)
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Este pedido ya fue procesado.", Toast.LENGTH_SHORT).show()
+        // Actualizamos el constructor del adapter con los dos lambdas (clicks)
+        adapter = MisPedidosAdapter(
+            emptyList(),
+            onPedidoClicked = { pedido ->
+                if (pedido.estado == "PENDIENTE_PAGO") {
+                    val intent = Intent(this, PagoActivity::class.java)
+                    intent.putExtra("pedidoId", pedido.id)
+                    intent.putExtra("total", pedido.total)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Estado actual: ${pedido.estado}", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onCancelarClicked = { pedido ->
+                // NUEVO: Llamamos al diálogo de confirmación
+                mostrarDialogoCancelacion(pedido)
             }
-        }
+        )
         binding.recyclerMisPedidos.layoutManager = LinearLayoutManager(this)
         binding.recyclerMisPedidos.adapter = adapter
+    }
+
+    // NUEVO: Función para confirmar y ejecutar la cancelación
+    private fun mostrarDialogoCancelacion(pedido: Pedido) {
+        AlertDialog.Builder(this)
+            .setTitle("¿Cancelar pedido?")
+            .setMessage("Si cancelas el pedido #${pedido.codigoPedido}, no podrás deshacer esta acción.")
+            .setPositiveButton("Sí, cancelar") { _, _ ->
+                cancelarPedidoEnFirebase(pedido.id)
+            }
+            .setNegativeButton("No", null)
+            .show()
+    }
+
+    // NUEVO: Función que hace el update en Firestore
+    private fun cancelarPedidoEnFirebase(pedidoId: String) {
+        db.collection("pedidos").document(pedidoId)
+            .update("estado", "CANCELADO")
+            .addOnSuccessListener {
+                Toast.makeText(this, "Pedido cancelado correctamente", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Log.e("CancelError", "Error al cancelar", e)
+                Toast.makeText(this, "Error al cancelar el pedido", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun escucharCambiosEnPedidos() {
@@ -75,7 +109,7 @@ class MisPedidosActivity : AppCompatActivity() {
 
                 if (snapshot != null && !snapshot.isEmpty) {
                     val pedidosConId = snapshot.documents.mapNotNull { doc ->
-                        doc.toObject(Pedido::class.java)?.apply { id = doc.id } 
+                        doc.toObject(Pedido::class.java)?.apply { id = doc.id }
                     }
                     val pedidosOrdenados = pedidosConId.sortedByDescending { it.fecha }
                     adapter.setData(pedidosOrdenados)
