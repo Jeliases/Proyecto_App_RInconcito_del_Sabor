@@ -68,10 +68,10 @@ class CarritoActivity : AppCompatActivity() {
     private fun verificarYConfirmarPedido() {
         val user = auth.currentUser ?: return
         binding.btnConfirmarPedido.isEnabled = false
-
+        //Bloquea el spam requerimiento es que el admin apruebe el pago o suba el pago
         db.collection("pedidos")
             .whereEqualTo("clienteId", user.uid)
-            .whereEqualTo("estado", "PENDIENTE_PAGO")
+            .whereIn("estado", listOf("PENDIENTE_PAGO", "PAGO_EN_VERIFICACION"))
             .get()
             .addOnSuccessListener { snapshot ->
                 if (snapshot.isEmpty) {
