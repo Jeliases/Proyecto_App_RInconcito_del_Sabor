@@ -63,6 +63,18 @@
                 android:textColor="#D32F2F"
                 android:layout_marginTop="4dp"/>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayoutMetodo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:tabIndicatorColor="#D32F2F"
+                app:tabSelectedTextColor="#D32F2F"
+                android:background="@android:color/transparent">
+                <com.google.android.material.tabs.TabItem android:text="Yape" />
+                <com.google.android.material.tabs.TabItem android:text="Plin" />
+            </com.google.android.material.tabs.TabLayout>
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardQR"
                 android:layout_width="wrap_content"
@@ -70,7 +82,7 @@
                 app:cardCornerRadius="24dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@android:color/white"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="16dp">
 
                 <ImageView
                     android:id="@+id/imgQR"
@@ -81,18 +93,29 @@
                     android:contentDescription="Código QR para pago"/>
             </com.google.android.material.card.MaterialCardView>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDescargarQR"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar QR en galería"
+                android:textColor="#D32F2F"
+                android:layout_marginTop="8dp"
+                app:icon="@android:drawable/ic_menu_save"
+                app:iconTint="#D32F2F"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/bg_rounded_light"
                 android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1. Escanea el QR y realiza el pago"
+                    android:text="1. Escanea el QR o descárgalo"
                     android:textColor="#111111"
                     android:textStyle="bold" />
 
